@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import firebase from "firebase/app";
+import firebase, { firestore } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore"; // <- needed if using firestore
 import "firebase/functions"; // <- needed if using httpsCallable
@@ -35,6 +35,9 @@ firebase.initializeApp(fbConfig);
 // Initialize other services on firebase instance
 firebase.firestore(); // <- needed if using firestore
 firebase.functions(); // <- needed if using httpsCallable
+//baraye add
+//const settings = { timestampsInSnapshots: true };
+//firestore.settings(settings);
 
 // Add firebase to reducers
 const rootReducer = combineReducers({
