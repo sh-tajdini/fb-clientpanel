@@ -9,8 +9,13 @@ import { createStore, combineReducers, compose } from "redux";
 import {
   ReactReduxFirebaseProvider,
   firebaseReducer,
+  reactReduxFirebase,
 } from "react-redux-firebase";
-import { createFirestoreInstance, firestoreReducer } from "redux-firestore"; // <- needed if using firestore
+import {
+  createFirestoreInstance,
+  firestoreReducer,
+  reduxFirestore,
+} from "redux-firestore"; // <- needed if using firestore
 
 const fbConfig = {
   apiKey: "AIzaSyC0wf9bxnrzazCf36vU3Rg9zDQn0WQUsBU",
@@ -33,11 +38,16 @@ const rrfConfig = {
 firebase.initializeApp(fbConfig);
 
 // Initialize other services on firebase instance
-firebase.firestore(); // <- needed if using firestore
+//const firestore = firebase.firestore(); // <- needed if using firestore
 firebase.functions(); // <- needed if using httpsCallable
 //baraye add
 //const settings = { timestampsInSnapshots: true };
 //firestore.settings(settings);
+
+const createStoreWithFirebase = compose(
+  reactReduxFirebase(firebase, rrfConfig),
+  reduxFirestore(firebase)
+)(createStore);
 
 // Add firebase to reducers
 const rootReducer = combineReducers({
@@ -47,17 +57,19 @@ const rootReducer = combineReducers({
 
 // Create store with reducers and initial state
 const initialState = {};
-const store = createStore(
+const store = createStoreWithFirebase(
   rootReducer,
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  compose(
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 
-const rrfProps = {
-  firebase,
-  config: rrfConfig,
-  dispatch: store.dispatch,
-  createFirestoreInstance, // <- needed if using firestore
-};
+// const rrfProps = {
+//   firebase,
+//   config: rrfConfig,
+//   dispatch: store.dispatch,
+//   createFirestoreInstance, // <- needed if using firestore
+// };
 
 export default store;
