@@ -103,13 +103,14 @@ class ClientDetails extends Component {
                   <h3 className="pull-right">
                     Balance:{" "}
                     <span
-                      classnames={classnames({
+                      className={classnames({
                         "text-danger": client.balance > 0,
                         "text-success": client.balance === 0,
                       })}
                     >
                       ${parseFloat(client.balance).toFixed(2)}
-                    </span>{" "}
+                    </span>
+                    {' '}
                     <small>
                       <a
                         href="#!"
@@ -119,9 +120,9 @@ class ClientDetails extends Component {
                           })
                         }
                       >
-                        <i className="fas fa-pencil-alt"></i>
+                        <i className="fas fa-pencil-alt"/>
                       </a>
-                      a{" "}
+                      {" "}
                     </small>
                   </h3>
                   {balanceForm}
